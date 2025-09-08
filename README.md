@@ -1,2 +1,2 @@
-# homeworks
-Homework repository for programming
+#homeworks
+My Homework repository for programming
