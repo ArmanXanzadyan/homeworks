@@ -8,10 +8,11 @@ main()
     for (int i = 0; i < 8; ++i) {
         result ^= array[i];
     }
+    const int mask = result & -result;
     int a = 0;
     int b = 0;
     for (int i = 0; i < 8; ++i) {
-        if (array[i] & result != 0) {
+        if ((array[i] & mask) != 0) {
             a ^= array[i];
             continue;
         }
