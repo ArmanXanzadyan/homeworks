@@ -3,7 +3,7 @@
 int
 main()
 {
-    int array[] = {1, 2, 3, 9, 4, 2, 1, 9};
+    int array[] = {165, 2, 3654, 9, 18765, 2, 165, 9};
     int result = 0;
     for (int i = 0; i < 8; ++i) {
         result ^= array[i];
