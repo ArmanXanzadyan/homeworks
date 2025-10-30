@@ -191,9 +191,9 @@ Sudoku::play()
             if (event.type == sf::Event::TextEntered && selectedRow >= 0 && selectedCol >= 0) {
                 if (event.text.unicode >= '1' && event.text.unicode <= '9') {
                     const int number = event.text.unicode - '0';
-                   /// if(isValid(selectedRow, selectedCol, number)) {
+                    if(isValid(selectedRow, selectedCol, number)) {
                         setCellValue(selectedRow, selectedCol, number);
-                   /// }
+                    }
                 }
             }
         }
