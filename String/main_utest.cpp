@@ -73,6 +73,71 @@ TEST(StringTest, StaticVsDynamic)
     EXPECT_TRUE(dynamicStr.isDynamic());
 }
 
+TEST(StringTest, MoveConstructorStatic)
+{
+    String s1("Hi");
+    String s2(std::move(s1));
+
+    EXPECT_STREQ(s2.c_str(), "Hi");
+    EXPECT_EQ(s2.length(), 2u);
+    EXPECT_FALSE(s2.isDynamic());
+
+    EXPECT_EQ(s1.length(), 0u);
+    EXPECT_STREQ(s1.c_str(), "");
+    EXPECT_FALSE(s1.isDynamic());
+}
+
+
+TEST(StringTest, MoveConstructorDynamic)
+{
+    String s1("This is a long string exceeding SSO_BUFFER_SIZE");
+    bool wasDynamic = s1.isDynamic();
+
+    String s2(std::move(s1));
+
+    EXPECT_TRUE(s2.isDynamic());
+    EXPECT_TRUE(wasDynamic);
+    EXPECT_STREQ(s2.c_str(), "This is a long string exceeding SSO_BUFFER_SIZE");
+
+    EXPECT_EQ(s1.length(), 0u);
+    EXPECT_STREQ(s1.c_str(), "");
+    EXPECT_FALSE(s1.isDynamic());
+}
+
+TEST(StringTest, MoveAssignmentStatic)
+{
+    String s1("Hi");
+    String s2;
+    s2 = std::move(s1);
+
+    EXPECT_STREQ(s2.c_str(), "Hi");
+    EXPECT_EQ(s2.length(), 2u);
+    EXPECT_FALSE(s2.isDynamic());
+
+    // Moved-from s1 should be empty
+    EXPECT_EQ(s1.length(), 0u);
+    EXPECT_STREQ(s1.c_str(), "");
+    EXPECT_FALSE(s1.isDynamic());
+}
+
+TEST(StringTest, MoveAssignmentDynamic)
+{
+    String s1("This is a long string exceeding SSO_BUFFER_SIZE");
+    bool wasDynamic = s1.isDynamic();
+
+    String s2;
+    s2 = std::move(s1);
+
+    EXPECT_TRUE(s2.isDynamic());
+    EXPECT_TRUE(wasDynamic);
+    EXPECT_STREQ(s2.c_str(), "This is a long string exceeding SSO_BUFFER_SIZE");
+
+    // Moved-from s1 should behave as empty static string
+    EXPECT_EQ(s1.length(), 0u);
+    EXPECT_STREQ(s1.c_str(), "");
+    EXPECT_FALSE(s1.isDynamic());
+}
+
 
 int
 main(int argc, char** argv)

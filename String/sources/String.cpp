@@ -23,9 +23,48 @@ String::String(const char* str)
     initFrom(str);
 }
 
-String::String(const String& other)
+String::String(const String& rhv)
 {
-    initFrom(other.c_str());
+    initFrom(rhv.c_str());
+}
+
+
+String::String(String&& rhv) noexcept
+{
+    if (rhv.isDynamic()) {
+        data = rhv.data;
+        rhv.data.ptr = NULL;
+        rhv.data.length = 0;
+        rhv.data.capacity = 0;
+        rhv.small_[0] = 0;
+        return;
+    }
+    std::memcpy(small_, rhv.small_, SSO_BUFFER_SIZE);
+    rhv.small_[0] = 0;
+    rhv.small_[1] = '\0';
+}
+
+
+String& String::operator=(String&& rhv) noexcept
+{
+    if (this == &rhv) return *this;
+    if (isDynamic()) {
+        delete[] data.ptr;
+        data.ptr = NULL;
+    }
+
+    if (rhv.isDynamic()) {
+        data = rhv.data;
+        rhv.data.ptr = NULL;
+        rhv.data.length = 0;
+        rhv.data.capacity = 0;
+        rhv.small_[0] = 0;
+        return *this;
+    }
+    std::memcpy(small_, rhv.small_, SSO_BUFFER_SIZE);
+    rhv.small_[0] = 0;
+    rhv.small_[1] = '\0';
+    return *this;
 }
 
 String::~String()
@@ -37,9 +76,9 @@ String::~String()
 }
 
 String&
-String::operator=(const String& other)
+String::operator=(const String& rhv)
 {
-    if (this != &other) assign(other.c_str());
+    if (this != &rhv) assign(rhv.c_str());
     return *this;
 }
 
