@@ -44,6 +44,11 @@ String::String(String&& rhv) noexcept
     rhv.small_[1] = '\0';
 }
 
+bool
+String::operator==(const String& other) const
+{
+    if (isDynamic() != other.isDynamic()) return false;
+}
 
 String& String::operator=(String&& rhv) noexcept
 {
@@ -129,6 +134,7 @@ String::assign(const char* str)
 }
 
 
+
 void
 String::setDinamicLength(const size_t length)
 {
@@ -149,6 +155,7 @@ String::makeDynamic(const char* str, const size_t len)
     data.ptr = new char[len + 1];
     std::memcpy(data.ptr, str, len + 1);
 }
+
 
 void
 String::makeStatic(const char* str, const size_t len)
