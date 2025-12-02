@@ -1,7 +1,7 @@
 progname=Vector
 utest=utest_$(progname)
 CXX=g++
-CXXFLAGS=-Wall -Wextra -Werror -std=c++11 -I.
+CXXFLAGS=-Wall -Wextra -Werror -std=c++17 -I.
 
 debug:   CXXFLAGS+=-g3
 release: CXXFLAGS+=-g0 -DNDEBUG
