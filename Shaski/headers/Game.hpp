@@ -9,8 +9,9 @@ public:
     Game();
     void reset();
 
-    bool makeMove(int x1, int y1, int x2, int y2);
-    std::vector<int> getPossibleNumbers(int row, int col) const;
+    bool hasCaptureFrom(const int row, const int col) const;
+    bool makeMove(const int x1, const int y1, const int x2, const int y2);
+    std::vector<int> getPossibleNumbers(const int row, const int col) const;
     bool hasAnyCapture() const;
 
     bool isGameOver() const;
